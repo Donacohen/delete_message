@@ -1,0 +1,32 @@
+from telegram.ext import Updater, MessageHandler, Filters
+
+# Замените на ваш токен бота, полученный у @BotFather
+TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+
+def delete_message(update, context):
+    # Получаем сообщение
+    message = update.message
+
+    # Проверяем сообщение на наличие запрещенных слов или условий
+    if 'запрещенное_слово' in message.text.lower():
+        # Удаляем сообщение
+        message.delete()
+
+def main():
+    # Создаем экземпляр Updater и передаем ему токен вашего бота
+    updater = Updater(TOKEN, use_context=True)
+
+    # Получаем диспетчер для регистрации обработчиков
+    dp = updater.dispatcher
+
+    # Добавляем обработчик для удаления сообщений
+    dp.add_handler(MessageHandler(Filters.text, delete_message))
+
+    # Начинаем поиск обновлений
+    updater.start_polling()
+
+    # Останавливаем бота при нажатии Ctrl+C
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
